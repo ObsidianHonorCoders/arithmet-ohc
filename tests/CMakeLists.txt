@@ -5,17 +5,22 @@ add_definitions(-DUNICODE -D_UNICODE)
 
 include(FetchContent)
 set(FETCHCONTENT_BASE_DIR "${CMAKE_SOURCE_DIR}/tests/build_gtest")
-FetchContent_Declare( googletest
-                      URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
-                      EXCLUDE_FROM_ALL )
+FetchContent_Declare(googletest
+                     URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.zip
+                     EXCLUDE_FROM_ALL)
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
 enable_testing()
 file(GLOB TEST_SOURCES "./test_*.cpp")
 add_executable("test_${EXE_NAME}" ${TEST_SOURCES})
-target_link_libraries("test_${EXE_NAME}" gtest gtest_main gmock )
-target_include_directories("test_${EXE_NAME}" PRIVATE "${CMAKE_SOURCE_DIR}/include")
-file(GLOB PROJECT_SOURCES "${CMAKE_SOURCE_DIR}/src/*.cpp")
-target_sources("test_${EXE_NAME}" PRIVATE ${PROJECT_SOURCES})
+target_link_libraries("test_${EXE_NAME}" gtest gtest_main gmock luis_aritmetic_bot marco_aritmetic_bot calileus_aritmetic_bot)
+target_include_directories("test_${EXE_NAME}" PRIVATE "${CMAKE_SOURCE_DIR}")
+target_include_directories("test_${EXE_NAME}" PRIVATE "${CMAKE_SOURCE_DIR}/aritmetic_bot_luis")
+target_include_directories("test_${EXE_NAME}" PRIVATE "${CMAKE_SOURCE_DIR}/aritmetic_bot_marco")
+target_include_directories("test_${EXE_NAME}" PRIVATE "${CMAKE_SOURCE_DIR}/aritmetic_bot_calileus")
+file(GLOB PROJECT_SOURCES_LUIS "${CMAKE_SOURCE_DIR}/aritmetic_bot_luis/*.cpp")
+file(GLOB PROJECT_SOURCES_MARCO "${CMAKE_SOURCE_DIR}/aritmetic_bot_marco/*.cpp")
+file(GLOB PROJECT_SOURCES_CALILEUS "${CMAKE_SOURCE_DIR}/aritmetic_bot_calileus/*.cpp")
+target_sources("test_${EXE_NAME}" PRIVATE ${PROJECT_SOURCES_LUIS} ${PROJECT_SOURCES_MARCO} ${PROJECT_SOURCES_CALILEUS})
 add_test(COMMAND "test_${EXE_NAME}" NAME "${EXE_NAME}_Tests")
