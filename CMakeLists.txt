@@ -1,3 +1,12 @@
+# @file      CMakeLists.txt
+# @brief     Main CMake configuration file for the ArithmetOHC project.
+# @author    Calileus
+# @date      2026-03-10
+# @copyright 2026 Obsidian Honor Coders. Licensed under Apache 2.0.
+# @see       https://github.com/ObsidianHonorCoders/arithmet-ohc
+# @details   Configures the build system for the arithmetic bot application,
+#            including library definitions and executable linking.
+
 cmake_minimum_required(VERSION 3.28)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)

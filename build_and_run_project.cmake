@@ -1,5 +1,9 @@
 ## @file    build_and_run_project.cmake
 ## @brief   Cross-platform CMake build and execution script
+## @author  Calileus
+## @date    2026-03-10
+## @copyright 2026 Obsidian Honor Coders. Licensed under Apache 2.0.
+## @see     https://github.com/ObsidianHonorCoders/arithmet-ohc
 ## @details Comprehensive build automation script that configures, compiles, and runs
 ##          a CMake-based C++ project across multiple platforms (Windows, Linux, macOS).
 ##          The script automatically inform the host platform, available compilers,

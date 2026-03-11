@@ -1,3 +1,12 @@
+# @file      CMakeLists.txt
+# @brief     CMake configuration file for the ArithmetOHC test suite.
+# @author    Calileus
+# @date      2026-03-10
+# @copyright 2026 Obsidian Honor Coders. Licensed under Apache 2.0.
+# @see       https://github.com/ObsidianHonorCoders/arithmet-ohc
+# @details   Configures Google Test integration and builds test executables
+#            for unit testing the arithmetic bot implementations.
+
 cmake_minimum_required(VERSION 3.28)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
