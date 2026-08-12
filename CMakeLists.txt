@@ -13,7 +13,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 add_definitions(-DUNICODE -D_UNICODE)
 
 # Project configuration
-project(ArithmetOHC)
+project(ArithmetOHC VERSION 0.0.0)
 
 # Set executable name from variable or use default
 if(NOT DEFINED EXE_NAME)

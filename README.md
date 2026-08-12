@@ -2,6 +2,10 @@
 
 The official OHC playground for competitive, high-precision arithmetic bot tournaments.
 
+## Release v0.0.0
+
+See **[RELEASE_NOTES.md](RELEASE_NOTES.md)** for release notes, features, and contribution guidelines.
+
 ## 📖 Overview
 
 ArithmetOHC is a C++ project that serves as a competitive platform for arithmetic bot implementations. The project provides a framework where multiple developers can create and test their arithmetic calculation bots in a standardized environment.
