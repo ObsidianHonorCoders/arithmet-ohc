@@ -1,202 +1,72 @@
-# Contributing Guidelines
-
-## Purpose
-
-Thank you for your interest in contributing to this C++ project.  
-These guidelines ensure consistency, code quality, and long-term maintainability.
-
----
-
-## Table of Contents
-
-- Getting Started
-- Issue Reporting
-- Branching & Workflow
-- Pull Request Guidelines
-  - Commit Message Convention
-  - Pull Request Title Convention
-  - Pull Request Best Practices
-- Code Review Process
-- Coding Standards
-- File Header Standardization
-- Documentation Requirements
-- Testing
-- CI & Merge Requirements
-- Licensing
-- Questions
-
+# Contributing to ArithmetOHC
 
 ## Getting Started
 
-1. Fork the repository.
-2. Clone your fork:
-   ```bash
-   git clone https://github.com/<your-username>/<repository-name>.git
-   ```
-3. Create a feature branch:
-   ```bash
-   git checkout -b feature/short-description
-   ```
-4. Make your changes following the rules below.
-5. Push your branch and open a Pull Request (PR).
+1. Fork the repository
+2. Clone your fork: `git clone https://github.com/<username>/arithmet-ohc.git`
+3. Create a feature branch: `git checkout -b feature/description`
+4. Make changes and push to your fork
+5. Open a Pull Request targeting `main`
 
----
+## What We Need (Priority Order)
 
-## Issue Reporting
+### 1. Implement Bot Logic
+Complete arithmetic evaluation in:
+- `aritmetic_bot_luis/bot_functions.cpp`
+- `aritmetic_bot_marco/bot_functions.cpp`
+- `aritmetic_bot_calileus/bot_functions.cpp`
 
-When opening an issue, include:
+Currently these return hardcoded `0.0`. They need to parse and evaluate expressions like `"2 + 2"` → `4.0`.
 
-- **Title:** short descriptive title
-- **Summary:** one-paragraph description of the problem
-- **Steps to reproduce:** minimal steps and example input
-- **Expected vs Actual:** what you expected to happen and what actually happened
-- **Logs / output / screenshots:** any relevant output or images
-- **Environment:** OS, compiler, build options (if applicable)
+### 2. Write Tests
+Add test cases in `tests/` directory using Google Test:
 
-Use labels to indicate severity and area (e.g., `bug`, `enhancement`, `docs`).
+```cpp
+#include <gtest/gtest.h>
+#include "aritmetic_bot_luis/bot_header.hpp"
 
----
+TEST(LuisBot, Addition) {
+  double result = luis_aritmetic_bot::calculate("2 + 2");
+  EXPECT_EQ(result, 4.0);
+}
 
-## Branching & Workflow
-
-| Branch        | Purpose                         |
-|---------------|---------------------------------|
-| `main`        | Stable, production-ready code   |
-| `develop`     | Integration branch              |
-| `feature/*`   | New features                    |
-| `fix/*`       | Bug fixes                       |
-| `docs/*`      | Documentation changes           |
-
----
-
-PR branch flow and guidance:
-
-- Target `develop` for routine feature branches (`feature/*`).
-- Open hotfixes directly against `main` and merge into `develop` after release.
-- Small bugfix branches (`fix/*`) may target `develop` unless urgent for `main`.
-- Rebase feature branches onto `develop` to keep history clean; use merge commits for release merges.
-
----
-
-## Pull Request Guidelines
-
-### Commit Message Convention
-
-Use clear, imperative, atomic commit messages.
-
-**Format:**
-```
-<short description>
+TEST(LuisBot, Precedence) {
+  double result = luis_aritmetic_bot::calculate("2 + 3 * 4");
+  EXPECT_EQ(result, 14.0);  // Not 20
+}
 ```
 
-**Examples:**
+### 3. Document the API
+Add comments to header files explaining:
+- What expressions are valid
+- What operators are supported
+- How errors are handled
+
+## Code Standards
+
+- **Language**: C++17
+- **Formatting**: `clang-format` (run before commit)
+- **Naming**: Follow existing code style
+
+## Commit Messages
+
+Use clear, imperative format:
 ```
-add vector normalization utility
-handle division by zero in matrix operations
-add authorship header standard
-simplify ownership semantics
-```
-
-
-### Pull Request Title Convention
-
-Use the same structured format for PR titles to make reviews and changelogs consistent and discoverable. Keep the PR title short (≤72 characters) and put extended details in the PR description.
-
-**Format:**
-```
-<type>(scope): short imperative summary
-```
-
-Allowed types:
-- feat
-- fix
-- docs
-- refactor
-- test
-- build
-- chore
-
-**PR title examples:**
-```
-fix(board): handle null-pointer in move parser
-feat(pawns): add en-passant support
-docs: update contributing guidelines
+implement addition and subtraction operators
+add unit tests for operator precedence
+document supported expression format
 ```
 
+## Pull Request Checklist
 
-### Pull Request Best Practices
+- [ ] Code builds: `cmake -P build_and_run_project.cmake`
+- [ ] Tests pass: `ctest --test-dir build --output-on-failure`
+- [ ] Commits are clear and focused
+- [ ] Related documentation updated
 
-1. One PR = One Logical Change
+## Branching
 
-A Pull Request should represent one coherent unit of work.
-
-Good examples:
-
-- "Add move validation for bishop"
-- "Refactor Board class to reduce coupling"
-- "Fix memory leak in GameManager"
-- "Add unit tests for checkmate detection"
-
-Bad example:
-
-- "Added bishop validation + refactored engine + updated README + fixed random bug"
-
-A PR should answer clearly: What problem does this PR solve? If the answer is multiple unrelated things → split it.
-
-2. Keep PRs Small (Reviewable Size)
-
-Ideal PR size: 100–400 lines changed (rule of thumb). Keep a focused scope so the change is easy to review in under 15 minutes.
-
-3. Avoid Mixing Unrelated Topics in One PR
-
-High-Level Rule:
-
-A good PR should be:
-
-- Small
-- Focused
-- Self-contained
-- Easy to review
-- Reversible
-
-Follow these practices to make reviews faster and higher-quality: describe intent, include testing notes, link related issues, add a short checklist (CI, tests, docs, formatting), and keep commits atomic (squash/rebase when requested).
-
----
-
-## Code Review Process
-
-- Every PR requires at least **one approval**.
-- Code must:
-  - Compile without warnings
-  - Pass all tests
-  - Follow formatting and documentation rules
-
----
-
-## Coding Standards
-
-- Language standard: **C++17**
-- Formatting: `clang-format` (project `.clang-format` file)
-- Naming conventions:
-| Entity          | Java / TS / JS | Python      | C / C++     | CMake                |
-|-----------------|----------------|-------------|-------------|----------------------|
-| Types (Classes) | PascalCase     | PascalCase  | PascalCase  | PascalCase (Targets) |
-| Functions       | camelCase      | snake_case  | PascalCase  | snake_case           |
-| Variables       | camelCase      | snake_case  | snake_case  | snake_case (Local)   |
-| Constants       | UPPER_SNAKE    | UPPER_SNAKE | kPascalCase | UPPER_SNAKE (Global) |
-| Macros          | N/A            | N/A         | UPPER_SNAKE | N/A                  |
-- Headers:
-  ```cpp
-  #pragma once
-  ```
-
----
-
-## File Header Standardization
-
-All `.cpp` and `.h` files **must include a standardized file header** at the top.
-
-### Required Header Template for .cpp and .hpp Files
+Target all PRs to `main`.
 
 ```cpp
 /// @file         [Filename]

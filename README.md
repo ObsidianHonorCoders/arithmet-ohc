@@ -1,66 +1,116 @@
 # ArithmetOHC
 
-The official OHC playground for competitive, high-precision arithmetic bot tournaments.
+**v0.0.1 - Framework for arithmetic expression evaluators**
 
-## Release v0.0.0
+**New here?** Start with [GETTING_STARTED.md](GETTING_STARTED.md) (5 minutes)
 
-See **[RELEASE_NOTES.md](RELEASE_NOTES.md)** for release notes, features, and contribution guidelines.
+## What This Is
 
-## 📖 Overview
+ArithmetOHC is a C++ framework for implementing and testing arithmetic expression evaluators. It provides:
+- A standard bot interface for arithmetic implementations
+- Cross-platform build system (CMake)
+- Continuous integration pipeline (GitHub Actions)
+- Extensible architecture for adding new bot implementations
 
-ArithmetOHC is a C++ project that serves as a competitive platform for arithmetic bot implementations. The project provides a framework where multiple developers can create and test their arithmetic calculation bots in a standardized environment.
+## Current Status
 
-## 🏗️ Project Structure
+**✅ Working**:
+- Build system and automation scripts
+- Cross-platform support (Windows, Linux, macOS)
+- CI/CD pipeline
+- Bot interface definition
+- Framework structure
 
-```
-ArithmetOHC/
-├── .github/                       # GitHub workflows and templates
-│   ├── workflows/
-│   │   └── integration-test.yml   # CI/CD pipeline for multi-platform testing
-│   └── pull_request_template.md   # Standardized PR template
-├── aritmetic_bot_luis/            # Luis's arithmetic bot implementation
-│   ├── bot_header.hpp             # Header file with function declarations
-│   └── bot_functions.cpp          # Implementation of calculation functions
-├── aritmetic_bot_marco/           # Marco's arithmetic bot implementation
-│   ├── bot_header.hpp             # Header file with function declarations
-│   └── bot_functions.cpp          # Implementation of calculation functions
-├── aritmetic_bot_calileus/        # Calileus's arithmetic bot implementation
-│   ├── bot_header.hpp             # Header file with function declarations
-│   └── bot_functions.cpp          # Implementation of calculation functions
-├── cmakehelpers/                  # CMake helper utilities
-│   └── detect_generator.cmake     # Platform detection for build system
-├── tests/                         # Unit test suite
-│   ├── CMakeLists.txt             # Test configuration with Google Test
-│   └── build_gtest/               # Google Test framework (generated, git ignored)
-├── build/                         # Build output directory (generated, git ignored)
-├── main.cpp                       # Main entry point demonstrating bot usage
-├── CMakeLists.txt                 # Main CMake configuration
-├── build_and_run_project.cmake    # Cross-platform build automation script
-├── Doxyfile                       # Doxygen configuration for documentation
-├── .clang-format                  # Code formatting rules
-├── .gitignore                     # Git ignore patterns
-├── LICENSE                        # Apache License 2.0
-├── CODE_OF_CONDUCT.md             # Community guidelines
-└── CONTRIBUTING.md                # Contribution guidelines
+**⚠️ Incomplete**:
+- Bot implementations are placeholder stubs (return 0.0, not implemented)
+- Test files not written (test framework configured)
+- Input validation not implemented
+- Error handling not implemented
+
+See [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) for detailed current status.
+
+## Quick Start
+
+### Build
+
+```bash
+# Automated (recommended)
+cmake -P build_and_run_project.cmake
+
+# Manual
+mkdir build && cd build
+cmake .. && cmake --build . --config Release
 ```
 
-## 🤖 Bot Implementations
+### Run
 
-Each arithmetic bot follows a consistent interface:
+```bash
+./build/arithmet_ohc              # Linux/macOS
+./build/Release/arithmet_ohc.exe  # Windows
+```
 
-### Luis's Bot (`aritmetic_bot_luis`)
-- **Namespace**: `luis_aritmetic_bot`
-- **Function**: `double calculate(std::string expression)`
-- **Purpose**: Luis's implementation of arithmetic expression evaluation
+**Expected output** (current):
+```
+Luis Result: 0
+Marco Result: 0
+Calileus Result: 0
+```
 
-### Marco's Bot (`aritmetic_bot_marco`)
-- **Namespace**: `marco_aritmetic_bot`
-- **Function**: `double calculate(std::string expression)`
-- **Purpose**: Marco's implementation of arithmetic expression evaluation
+## Requirements
 
-### Calileus's Bot (`aritmetic_bot_calileus`)
-- **Namespace**: `calileus_aritmetic_bot`
-- **Function**: `double calculate(std::string expression)`
+- CMake 3.28+
+- C++17 compiler (GCC, Clang, or MSVC)
+- Git
+
+## Project Structure
+
+```
+aritmetic_bot_*/ ── Bot implementations (stubs only)
+tests/ ──────────── Test framework (no tests yet)
+cmakehelpers/ ──── Build utilities
+main.cpp ──────── Entry point
+CMakeLists.txt ─ Build config
+```
+
+## How to Contribute
+
+1. Fork and clone the repository
+2. Create a feature branch: `git checkout -b feature/description`
+3. Make changes following code standards in [CONTRIBUTING.md](CONTRIBUTING.md)
+4. Push and open a pull request
+
+See [CONTRIBUTING.md](CONTRIBUTING.md) for detailed guidelines.
+
+## Configuration
+
+### Build Options
+
+- `BUILD_TESTS=ON` - Enable test compilation (default: ON)
+- `EXE_NAME` - Custom executable name (default: arithmet_ohc)
+- `BUILD_DIR` - Custom build directory (default: build)
+
+Example:
+```bash
+cmake -DEXE_NAME=my_app -DBUILD_TESTS=ON -P build_and_run_project.cmake
+```
+
+## What's Next
+
+1. **Bot implementation** - Complete arithmetic evaluation logic
+2. **Testing** - Write unit tests for bot functions
+3. **Documentation** - Formalize expression specification and API docs
+
+See [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) for priority list.
+
+## Community
+
+- [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) - Community standards
+- [CONTRIBUTING.md](CONTRIBUTING.md) - How to contribute
+- [SECURITY.md](SECURITY.md) - Security policy
+
+## License
+
+Apache License 2.0 - See [LICENSE](LICENSE)
 - **Purpose**: Calileus's implementation of arithmetic expression evaluation
 
 ## 🚀 Getting Started
