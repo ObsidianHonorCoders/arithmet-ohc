@@ -14,7 +14,7 @@
 /// @note   Currently returns 0.0 as a placeholder implementation.
 /// @details This is a stub implementation that needs to be completed with actual
 ///          expression parsing and calculation logic.
-double calileus_aritmetic_bot::calculate(std::string expression)
+double calileus_aritmetic_bot::calculate([[maybe_unused]] std::string expression)
 {
   // TODO: Implement calculation logic
 
