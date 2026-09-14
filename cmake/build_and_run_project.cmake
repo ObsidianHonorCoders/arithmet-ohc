@@ -92,6 +92,12 @@ if(EXISTS "${BUILD_DIR}")
     message(STATUS "Cleaning: Removing old build directory...")
     file(REMOVE_RECURSE "${BUILD_DIR}")
 endif()
+
+if(EXISTS "tests/build_gtest")
+    message(STATUS "Cleaning: Removing tests/build_gtest cache directory...")
+    file(REMOVE_RECURSE "tests/build_gtest")
+endif()
+
 file(MAKE_DIRECTORY "${BUILD_DIR}")
 
 ## @section detect_generator Generator Detection
