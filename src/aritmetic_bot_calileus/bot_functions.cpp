@@ -6,7 +6,7 @@
 /// @see       https://github.com/ObsidianHonorCoders/arithmet-ohc
 /// @details   Contains the implementation of Calileus's arithmetic calculation functions.
 
-#include "bot_header.hpp"
+#include "aritmetic_bot_calileus/bot_header.hpp"
 
 /// @brief  Calculates the result of a mathematical expression.
 /// @param  expression String containing the mathematical expression to evaluate.

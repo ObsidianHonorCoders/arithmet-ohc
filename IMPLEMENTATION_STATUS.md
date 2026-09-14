@@ -1,21 +1,15 @@
 # Implementation Status
 
-**v0.0.1 - Current Development Status**
-
-### What's New in v0.0.1
-- ✅ Documentation cleanup - removed non-essential files
-- ✅ Unified documentation style across all files
-- ✅ Clear current-status-only focus (no future features)
-- ✅ 7 essential documentation files (down from 18+)
-- ✅ Reduced new contributor ramp-up time to 13-17 minutes
+This document describes only the current repository state.
+Historical notes are tracked in `CHANGELOG.md`.
 
 ## What's Working ✅
 
 | Component | Status | Notes |
 |-----------|--------|-------|
-| Build System | ✅ | CMake configuration complete |
-| Cross-Platform Support | ✅ | Windows, Linux, macOS tested |
-| CI/CD Pipeline | ✅ | Runs on 3 platforms automatically |
+| Build System | ✅ | CMake presets and scripts configured |
+| Cross-Platform Support | ✅ | Windows, Linux, macOS targets configured |
+| CI/CD Pipeline | ✅ | Multi-platform workflow present |
 | Bot Interface | ✅ | All three bots have same contract |
 | Test Framework | ✅ | Google Test configured |
 | Project Structure | ✅ | Ready for development |
@@ -40,9 +34,9 @@ All three bots currently:
 - Have TODO comments
 
 **Files**:
-- `aritmetic_bot_luis/bot_functions.cpp` (lines 16-23)
-- `aritmetic_bot_marco/bot_functions.cpp` (lines 16-23)
-- `aritmetic_bot_calileus/bot_functions.cpp` (lines 16-23)
+- `src/aritmetic_bot_luis/bot_functions.cpp` (lines 16-23)
+- `src/aritmetic_bot_marco/bot_functions.cpp` (lines 16-23)
+- `src/aritmetic_bot_calileus/bot_functions.cpp` (lines 16-23)
 
 ### What Needs Implementation
 
@@ -84,4 +78,4 @@ Create `tests/test_*.cpp` files with Google Test framework. Minimum coverage:
 5. Implement remaining two bots
 6. Increase test coverage to >80%
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for how to contribute.
+See the organization-level contributing policy (inherited from the org `.github` repository) for how to contribute.

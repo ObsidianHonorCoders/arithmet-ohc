@@ -8,42 +8,147 @@
 #            including library definitions and executable linking.
 
 cmake_minimum_required(VERSION 3.28)
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_STANDARD_REQUIRED True)
-add_definitions(-DUNICODE -D_UNICODE)
 
 # Project configuration
-project(ArithmetOHC VERSION 0.0.0)
+project(
+    ArithmetOHC
+    VERSION 0.0.0
+    LANGUAGES CXX
+    DESCRIPTION "Framework for arithmetic expression evaluators"
+    HOMEPAGE_URL "https://github.com/ObsidianHonorCoders/arithmet-ohc"
+)
 
-# Set executable name from variable or use default
+# C++ Standard
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+add_definitions(-DUNICODE -D_UNICODE)
+
+# Default executable name
 if(NOT DEFINED EXE_NAME)
-    set(EXE_NAME "arithmet_ohc")
+    set(EXE_NAME
+        "arithmet_ohc"
+        CACHE STRING "Executable name" FORCE)
 endif()
 
-# Include directories
-include_directories(${CMAKE_SOURCE_DIR})
-include_directories(${CMAKE_SOURCE_DIR}/aritmetic_bot_luis)
-include_directories(${CMAKE_SOURCE_DIR}/aritmetic_bot_marco)
-include_directories(${CMAKE_SOURCE_DIR}/aritmetic_bot_calileus)
+# Build options
+option(BUILD_TESTING "Build unit tests" ON)
+option(OHC_ENABLE_WERROR "Treat compiler warnings as errors" ON)
 
-file(GLOB LUIS_SOURCES "aritmetic_bot_luis/*.cpp")
-add_library(luis_aritmetic_bot STATIC ${LUIS_SOURCES})
-target_include_directories(luis_aritmetic_bot PUBLIC ${CMAKE_SOURCE_DIR}/aritmetic_bot_luis )
+# Include CTest for testing support
+include(CTest)
 
-file(GLOB MARCO_SOURCES "aritmetic_bot_marco/*.cpp")
-add_library(marco_aritmetic_bot STATIC ${MARCO_SOURCES})
-target_include_directories(marco_aritmetic_bot PUBLIC ${CMAKE_SOURCE_DIR}/aritmetic_bot_marco )
+# Compiler warnings
+if(MSVC)
+    add_compile_options(/W4)
+    if(OHC_ENABLE_WERROR)
+        add_compile_options(/WX)
+    endif()
+else()
+    add_compile_options(-Wall -Wextra -Wpedantic)
+    if(OHC_ENABLE_WERROR)
+        add_compile_options(-Werror)
+    endif()
+endif()
 
-file(GLOB CALILEUS_SOURCES "aritmetic_bot_calileus/*.cpp")
-add_library(calileus_aritmetic_bot STATIC ${CALILEUS_SOURCES})
-target_include_directories(calileus_aritmetic_bot PUBLIC ${CMAKE_SOURCE_DIR}/aritmetic_bot_calileus )
+add_library(luis_aritmetic_bot STATIC
+    src/aritmetic_bot_luis/bot_functions.cpp
+)
+target_include_directories(luis_aritmetic_bot PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include/aritmetic_bot_luis>
+)
+target_compile_features(luis_aritmetic_bot PUBLIC cxx_std_17)
 
-add_executable(${EXE_NAME} main.cpp)
-target_link_libraries(${EXE_NAME} 
-    luis_aritmetic_bot 
+add_library(marco_aritmetic_bot STATIC
+    src/aritmetic_bot_marco/bot_functions.cpp
+)
+target_include_directories(marco_aritmetic_bot PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include/aritmetic_bot_marco>
+)
+target_compile_features(marco_aritmetic_bot PUBLIC cxx_std_17)
+
+add_library(calileus_aritmetic_bot STATIC
+    src/aritmetic_bot_calileus/bot_functions.cpp
+)
+target_include_directories(calileus_aritmetic_bot PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include/aritmetic_bot_calileus>
+)
+target_compile_features(calileus_aritmetic_bot PUBLIC cxx_std_17)
+
+add_executable(${EXE_NAME} src/app/main.cpp)
+target_link_libraries(${EXE_NAME} PRIVATE
+    luis_aritmetic_bot
     marco_aritmetic_bot
     calileus_aritmetic_bot
 )
 
-enable_testing()
-add_subdirectory(tests)
+if(BUILD_TESTING)
+    add_subdirectory(tests)
+endif()
+
+# Installation and package export
+include(GNUInstallDirs)
+
+install(
+    TARGETS luis_aritmetic_bot marco_aritmetic_bot calileus_aritmetic_bot ${EXE_NAME}
+    EXPORT ${PROJECT_NAME}-targets
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+    INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+)
+
+install(
+    DIRECTORY include/aritmetic_bot_luis/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/aritmetic_bot_luis
+    FILES_MATCHING
+    PATTERN "*.hpp"
+)
+
+install(
+    DIRECTORY include/aritmetic_bot_marco/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/aritmetic_bot_marco
+    FILES_MATCHING
+    PATTERN "*.hpp"
+)
+
+install(
+    DIRECTORY include/aritmetic_bot_calileus/
+    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/aritmetic_bot_calileus
+    FILES_MATCHING
+    PATTERN "*.hpp"
+)
+
+install(
+    EXPORT ${PROJECT_NAME}-targets
+    FILE ${PROJECT_NAME}-targets.cmake
+    NAMESPACE ${PROJECT_NAME}::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+)
+
+include(CMakePackageConfigHelpers)
+configure_package_config_file(
+    ${CMAKE_CURRENT_SOURCE_DIR}/cmake/${PROJECT_NAME}-config.cmake.in
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+    INSTALL_DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+)
+
+write_basic_package_version_file(
+    ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
+    VERSION ${PROJECT_VERSION}
+    COMPATIBILITY SameMajorVersion
+)
+
+install(
+    FILES
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config.cmake
+        ${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}-config-version.cmake
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+)
+
+include(CPack)
