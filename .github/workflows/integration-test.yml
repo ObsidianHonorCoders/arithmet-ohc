@@ -17,6 +17,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           clean: true
+      
       - name: Toolchain preflight
         run: |
           cmake --version
@@ -25,13 +26,15 @@ jobs:
       - name: Compiler preflight (non-Windows)
         if: runner.os != 'Windows'
         run: c++ --version
-      - name: Build & Run Script
-        run: cmake -DBUILD_TESTS=ON -P build_and_run_project.cmake
-      - name: Upload diagnostics on failure
+      
+      - name: Build, Test & Run
+        run: cmake -DBUILD_TESTING=ON -P cmake/build_and_run_project.cmake
+      
+      - name: Upload test results on failure
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: diagnostics-${{ matrix.os }}
+          name: test-results-${{ matrix.os }}
           if-no-files-found: ignore
           path: |
             build/**/Testing/**

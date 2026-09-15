@@ -13,7 +13,7 @@ cd arithmet-ohc
 
 ```bash
 # Automatic (recommended)
-cmake -P build_and_run_project.cmake
+cmake -P cmake/build_and_run_project.cmake
 
 # Or manual
 mkdir build && cd build && cmake .. && cmake --build . --config Release
@@ -39,7 +39,7 @@ Calileus Result: 0
 
 ### Implement Bot Logic
 1. Pick a bot: Luis, Marco, or Calileus
-2. Edit `aritmetic_bot_*/bot_functions.cpp`
+2. Edit `src/aritmetic_bot_*/bot_functions.cpp`
 3. Implement `calculate()` to evaluate math expressions
 4. See [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md) for details
 5. Submit PR to `main`
@@ -59,7 +59,7 @@ Calileus Result: 0
 
 **Build with tests**:
 ```bash
-cmake -DBUILD_TESTS=ON -P build_and_run_project.cmake
+cmake -DBUILD_TESTING=ON -P cmake/build_and_run_project.cmake
 ```
 
 **Run tests**:
@@ -69,13 +69,13 @@ ctest --test-dir build --output-on-failure
 
 **Format code**:
 ```bash
-clang-format -i aritmetic_bot_*/bot_*.cpp
+clang-format -i src/aritmetic_bot_*/bot_*.cpp
 ```
 
 ## Next Steps
 
 1. Choose a task from [IMPLEMENTATION_STATUS.md](IMPLEMENTATION_STATUS.md)
-2. Follow [CONTRIBUTING.md](CONTRIBUTING.md)
+2. Follow the organization-level contributing policy (inherited from the org `.github` repository)
 3. Submit a PR
 
 Welcome! 🎉

@@ -36,7 +36,7 @@
 ##
 ## @section usage Usage
 ## @code
-##   cmake -P build_and_run_project.cmake
+##   cmake -P cmake/build_and_run_project.cmake
 ## @endcode
 ##
 ## @section configuration Configuration
@@ -72,10 +72,10 @@ set(EXE_NAME "arithmet_ohc")
 ## @details All build files and the executable will be placed here
 set(BUILD_DIR "build")
 
-## @var     BUILD_TESTS
+## @var     BUILD_TESTING
 ## @brief   Option to build and run tests
 ## @details Set to ON to build and run tests
-option(BUILD_TESTS "Build and run tests" ON)
+option(BUILD_TESTING "Build and run tests" ON)
 
 ## @section exe_location Executable Path Resolution
 ## @brief                Constructs the path to the compiled executable
@@ -92,6 +92,12 @@ if(EXISTS "${BUILD_DIR}")
     message(STATUS "Cleaning: Removing old build directory...")
     file(REMOVE_RECURSE "${BUILD_DIR}")
 endif()
+
+if(EXISTS "tests/build_gtest")
+    message(STATUS "Cleaning: Removing tests/build_gtest cache directory...")
+    file(REMOVE_RECURSE "tests/build_gtest")
+endif()
+
 file(MAKE_DIRECTORY "${BUILD_DIR}")
 
 ## @section detect_generator Generator Detection
@@ -100,7 +106,7 @@ file(MAKE_DIRECTORY "${BUILD_DIR}")
 ##    - DETECTED_ARCH:     The detected bit-depth of the host system.
 ##    - NUM_CORES:         The detected available processor cores amount.
 ##    - GENERATOR:         The detected generator candidate.
-include(cmakehelpers/detect_generator.cmake)
+include(${CMAKE_CURRENT_LIST_DIR}/detect_generator.cmake)
 
 ## @section config CMake Configuration
 ## @brief          Runs cmake to generate platform-specific build files
@@ -114,7 +120,7 @@ message("======= CMake Configuration Phase =====================================
 ## @brief Arguments passed to cmake configuration
 ##        Includes: build directory (-B), build type, executable name
 ##        Append: generator argument if one was automatically selected
-set(CONF_ARGS -B ${BUILD_DIR} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DEXE_NAME=${EXE_NAME})
+set(CONF_ARGS -B ${BUILD_DIR} -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE} -DEXE_NAME=${EXE_NAME} -DBUILD_TESTING=${BUILD_TESTING})
 if(NOT "${GENERATOR}" STREQUAL "")
     list(APPEND CONF_ARGS -G "${GENERATOR}")
 endif()
@@ -167,7 +173,7 @@ message(STATUS "Build completed successfully using all ${NUM_CORES} CPU cores")
 ## @brief             Verify expected executable location and run it
 message("")
 message("======= Google Testing Suit Running Phase =====================================")
-if(BUILD_TESTS)
+if(BUILD_TESTING)
     message("Starting tests...")
     execute_process( COMMAND ${BUILD_DIR}/tests/test_${EXE_NAME} RESULT_VARIABLE TEST_RESULT )
     if(NOT TEST_RESULT EQUAL 0)
@@ -202,5 +208,5 @@ else()
     message(FATAL_ERROR "EXECUTABLE NOT FOUND at: ${EXE_PATH}")
 endif()
 
-message("Thanks for using build_and_run_project.cmake script!")
+message("Thanks for using cmake/build_and_run_project.cmake script!")
 message("")
